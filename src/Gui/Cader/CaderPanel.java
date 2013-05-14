@@ -2,19 +2,35 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Gui;
+package Gui.Cader;
+
+import Data.Cader;
+import Data.Player;
+import java.util.HashMap;
+import java.util.LinkedList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author Dirk
  */
-public class RaidPanel extends javax.swing.JPanel {
+public class CaderPanel extends javax.swing.JPanel {
 
+    private Cader cader;
+    private CreatePlayerFrame cpf;
     /**
      * Creates new form RaidPanel
      */
-    public RaidPanel() {
+    public CaderPanel(Cader cader) {
+        this.cader = cader;
+        cpf = new CreatePlayerFrame();
         initComponents();
+
+        caderTable.getRowSorter().toggleSortOrder(0);
+        setCaderView();
+        
     }
 
     /**
@@ -26,84 +42,179 @@ public class RaidPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        playerPopupMenu = new javax.swing.JPopupMenu();
+        changePlayer = new javax.swing.JMenuItem();
+        remPlayer = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        createPlayer = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        tankHideCB = new javax.swing.JCheckBox();
-        ddHideCB = new javax.swing.JCheckBox();
-        healHideCB = new javax.swing.JCheckBox();
-        supHideCB = new javax.swing.JCheckBox();
-        roleFilterCB = new javax.swing.JComboBox();
+        hideCBTank = new javax.swing.JCheckBox();
+        hideCBDD = new javax.swing.JCheckBox();
+        hideCBHeal = new javax.swing.JCheckBox();
+        hideCBSup = new javax.swing.JCheckBox();
+        jPanel2 = new javax.swing.JPanel();
+        hideCBWarrior = new javax.swing.JCheckBox();
+        hideCBRouge = new javax.swing.JCheckBox();
+        hideCBCleric = new javax.swing.JCheckBox();
+        hideCBMage = new javax.swing.JCheckBox();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        caderTable = new javax.swing.JTable();
+
+        changePlayer.setText("ändern");
+        changePlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changePlayerActionPerformed(evt);
+            }
+        });
+        playerPopupMenu.add(changePlayer);
+
+        remPlayer.setText("löschen");
+        playerPopupMenu.add(remPlayer);
+        playerPopupMenu.add(jSeparator1);
+
+        createPlayer.setText("neu");
+        createPlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createPlayerActionPerformed(evt);
+            }
+        });
+        playerPopupMenu.add(createPlayer);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        tankHideCB.setSelected(true);
-        tankHideCB.setText("Tank's");
-
-        ddHideCB.setSelected(true);
-        ddHideCB.setText("DD'S");
-
-        healHideCB.setSelected(true);
-        healHideCB.setText("Heiler");
-
-        supHideCB.setSelected(true);
-        supHideCB.setText("Supporter");
-
-        roleFilterCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tank", "keine Tanks", "Heiler& Support", "Alle" }));
-        roleFilterCB.setSelectedIndex(3);
-        roleFilterCB.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                roleFilterCBItemStateChanged(evt);
-            }
-        });
-        roleFilterCB.addActionListener(new java.awt.event.ActionListener() {
+        hideCBTank.setSelected(true);
+        hideCBTank.setText("Tank's");
+        hideCBTank.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roleFilterCBActionPerformed(evt);
+                cbActionPerformed(evt);
             }
         });
+
+        hideCBDD.setSelected(true);
+        hideCBDD.setText("DD'S");
+        hideCBDD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBHeal.setSelected(true);
+        hideCBHeal.setText("Heiler");
+        hideCBHeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBSup.setSelected(true);
+        hideCBSup.setText("Supporter");
+        hideCBSup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        hideCBWarrior.setSelected(true);
+        hideCBWarrior.setText("Krieger");
+        hideCBWarrior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBRouge.setSelected(true);
+        hideCBRouge.setText("Rouge");
+        hideCBRouge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBCleric.setSelected(true);
+        hideCBCleric.setText("Kleriker");
+        hideCBCleric.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBMage.setSelected(true);
+        hideCBMage.setText("Magier");
+        hideCBMage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(hideCBWarrior)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hideCBRouge)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hideCBCleric)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hideCBMage)
+                .addContainerGap(154, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(hideCBWarrior)
+                .addComponent(hideCBRouge)
+                .addComponent(hideCBCleric)
+                .addComponent(hideCBMage))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(tankHideCB)
+                .addComponent(hideCBTank)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ddHideCB)
+                .addComponent(hideCBDD)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(healHideCB)
+                .addComponent(hideCBHeal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(supHideCB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(roleFilterCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(hideCBSup)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(tankHideCB)
-                .addComponent(ddHideCB)
-                .addComponent(healHideCB)
-                .addComponent(supHideCB)
-                .addComponent(roleFilterCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hideCBTank)
+                    .addComponent(hideCBDD)
+                    .addComponent(hideCBHeal)
+                    .addComponent(hideCBSup))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        caderTable.setAutoCreateRowSorter(true);
+        caderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {"Test A", "1", "AX", null},
+                {"Test B", "2", "AY", null},
+                {"Test C", "3", "AFDf", null},
+                {"Test D", "4", null, null}
             },
             new String [] {
-                "Pos", "Name", "Klasse", "Main Rolle", "", "Moved"
+                "Name", "Klasse", "Main Rolle", "Second Rolle"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -114,10 +225,11 @@ public class RaidPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        caderTable.setColumnSelectionAllowed(true);
+        caderTable.setComponentPopupMenu(playerPopupMenu);
+        caderTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(caderTable);
+        caderTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -134,43 +246,118 @@ public class RaidPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void roleFilterCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleFilterCBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_roleFilterCBActionPerformed
+    private void cbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbActionPerformed
+        setCaderView();
+    }//GEN-LAST:event_cbActionPerformed
 
-    private void roleFilterCBItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roleFilterCBItemStateChanged
-        tankHideCB.setSelected(false);
-        ddHideCB.setSelected(false);
-        healHideCB.setSelected(false);
-        supHideCB.setSelected(false);
-        switch (roleFilterCB.getSelectedIndex()){
-            case 0 ://tanks
-                    tankHideCB.setSelected(true);
-                break;
-            default:// alle
-                    tankHideCB.setSelected(true);
-            case 1 ://-tanks
-                    ddHideCB.setSelected(true);
-            case 2 ://sup & healer
-                    healHideCB.setSelected(true);
-                    supHideCB.setSelected(true);
-                break;
-        }
-    }//GEN-LAST:event_roleFilterCBItemStateChanged
+    private void createPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPlayerActionPerformed
+        cpf.newPlayer();
+    }//GEN-LAST:event_createPlayerActionPerformed
+
+    private void changePlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePlayerActionPerformed
+        int pos = caderTable.getSelectedRow();
+        String name = (String)caderTable.getValueAt(pos,0);
+        Player player = cader.getCader().get(name);
+        cpf.editPlayer(player);
+    }//GEN-LAST:event_changePlayerActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox ddHideCB;
-    private javax.swing.JCheckBox healHideCB;
+    private javax.swing.JTable caderTable;
+    private javax.swing.JMenuItem changePlayer;
+    private javax.swing.JMenuItem createPlayer;
+    private javax.swing.JCheckBox hideCBCleric;
+    private javax.swing.JCheckBox hideCBDD;
+    private javax.swing.JCheckBox hideCBHeal;
+    private javax.swing.JCheckBox hideCBMage;
+    private javax.swing.JCheckBox hideCBRouge;
+    private javax.swing.JCheckBox hideCBSup;
+    private javax.swing.JCheckBox hideCBTank;
+    private javax.swing.JCheckBox hideCBWarrior;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JComboBox roleFilterCB;
-    private javax.swing.JCheckBox supHideCB;
-    private javax.swing.JCheckBox tankHideCB;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu playerPopupMenu;
+    private javax.swing.JMenuItem remPlayer;
     // End of variables declaration//GEN-END:variables
+    
+    private void setCaderView(){
+        DefaultTableModel tableModel = (DefaultTableModel)caderTable.getModel();
+        HashMap<String,Player> caderMember =cader.getCader();
+        String[] names= caderMember.keySet().toArray(new String[caderMember.size()]);
+        names= filterCaderView(names);
+        Player current;
+        Object[] newRow;
+        //clear --------------------------------------------------------------------
+        while(tableModel.getRowCount()>0){
+            tableModel.removeRow(0);
+        }
+        //fill ---------------------------------------------------------------------
+        for(int i=0;i<names.length;i++){
+            current = caderMember.get(names[i]);
+            newRow= new Object[4];
+            newRow[0]= current.getName();
+            newRow[1]= current.getStringRole();
+            newRow[2]= current.getStringMainSpec();
+            newRow[3]= current.getStringSecondSpec();
+            tableModel.addRow(newRow);
+        }
+    }
+    
+    //sort ---------------------------------------------------------------------
+    private String[] filterCaderView(String[] names){
+        Player current;
+        LinkedList<String> newNames = new LinkedList();
+        
+        boolean show;
+        for (int i=0;i<names.length;i++){
+            current = cader.getCader().get(names[i]);
+            switch(current.getMainSpec()){
+                case TANK:
+                    show = hideCBTank.isSelected();
+                    break;
+                case DD:
+                    show = hideCBDD.isSelected();
+                    break;
+                case HEAL:
+                    show = hideCBHeal.isSelected();
+                    break;
+                case SUPPORT:
+                    show = hideCBSup.isSelected();
+                    break;
+                default:
+                    show = false;
+            
+            }
+
+            switch(current.getRole()){
+                case WARRIOR:
+                    show &= hideCBWarrior.isSelected();
+                    break;
+                case ROUGE:
+                    show &= hideCBRouge.isSelected();
+                    break;
+                case CLERIC:
+                    show &= hideCBCleric.isSelected();
+                    break;
+                case MAGE:
+                    show &= hideCBMage.isSelected();
+                    break;
+                default:
+                    show = false;
+            
+            }
+            
+            if(show){
+                newNames.add(names[i]);
+            }
+        }
+        return newNames.toArray(new String[newNames.size()]);
+    }
+    
 }

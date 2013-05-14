@@ -4,6 +4,11 @@
  */
 package Gui;
 
+import Gui.Raid.RaidPanel;
+import Gui.Cader.CaderPanel;
+import Data.Cader;
+import InOut.FileHandler;
+
 /**
  *
  * @author Dirk
@@ -14,12 +19,19 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
+        Cader cader = new Cader();
+        FileHandler fileHandler = new FileHandler(cader);
+        fileHandler.readCader();
         initComponents();
-        RaidPanel rP = new RaidPanel();
+        
+        RaidPanel rP = new RaidPanel(cader, fileHandler);
+        rP.setName("Raids");
         tabPanel.add(rP);
-        //tabPanel.updateUI();
-        //revalidate();
-        //repaint();
+        
+        CaderPanel cP = new CaderPanel(cader);
+        cP.setName("Kader");
+        tabPanel.add(cP);
+        
     }
 
     /**
@@ -39,11 +51,15 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(tabPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .add(tabPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 848, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(tabPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .add(tabPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 460, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 0, Short.MAX_VALUE))
         );
 
         pack();

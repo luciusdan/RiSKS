@@ -6,6 +6,8 @@
  */
 package Data;
 
+import java.util.Date;
+
 /**
  *
  * @author Dirk
@@ -15,25 +17,31 @@ public class Player {
         CLERIC,MAGE,ROUGE,WARRIOR
     }
     public enum Spec{
-        TANK,DD,HEAL,SUPPORT
+        TANK,DD,HEAL,SUPPORT,NONE
     }
     
     
-    public Player(String name, Role role, Spec MainSpec) {
-        this.name = name;
-        this.role = role;
-        this.mainSpec = MainSpec;
-    }
     public Player(String name) {
         this.name = name;
         this.role = Role.CLERIC;
         this.mainSpec = Spec.DD;
+        this.secSpec = Spec.NONE;
+        this.joining = new Date();
     }
     
+    public Player(String name, Date joining) {
+        this.name = name;
+        this.role = Role.CLERIC;
+        this.mainSpec = Spec.DD;
+        this.secSpec = Spec.NONE;
+        this.joining = joining;
+    }
     
     private String name;
     private Role role;
     private Spec mainSpec;
+    private Spec secSpec;
+    private Date joining;
 
     public String getName() {
         return name;
@@ -55,6 +63,10 @@ public class Player {
     public Spec getMainSpec() {
         return mainSpec;
     }
+    
+    public Spec getSecondSpec() {
+        return secSpec;
+    }
     public String getStringMainSpec() {
         switch(mainSpec){
             case DD : return "Schaden";
@@ -64,7 +76,20 @@ public class Player {
             default: return "no Specific";
         }
     }
+    public String getStringSecondSpec() {
+        switch(secSpec){
+            case DD : return "Schaden";
+            case TANK   : return "Tank";
+            case HEAL  : return "Heiler";
+            case SUPPORT: return "Support";
+            default: return " ";
+        }
+    }
 
+    public Date getJoining() {
+        return joining;
+    }
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -74,32 +99,81 @@ public class Player {
     }
     public void setClass(String role) {
         role = role.toLowerCase();
-        if(role.equals("magier")||role.equals("mage")){
-            this.role = Role.MAGE;
-        }else if(role.equals("schurke")||role.equals("rouge")){
-            this.role = Role.ROUGE;
-        }else if(role.equals("krieger")||role.equals("warrior")){
-            this.role = Role.ROUGE;
-        }else if(role.equals("kleriker")||role.equals("cleric")){
-            this.role = Role.CLERIC;
+        switch (role) {
+            case "magier":
+            case "mage":
+                this.role = Role.MAGE;
+                break;
+            case "schurke":
+            case "rouge":
+                this.role = Role.ROUGE;
+                break;
+            case "krieger":
+            case "warrior":
+                this.role = Role.WARRIOR;
+                break;
+            case "kleriker":
+            case "cleric":
+                this.role = Role.CLERIC;
+                break;
         }
     }
     
-    public void setMainSpec(Spec MainSpec) {
-        this.mainSpec = MainSpec;
+    public void setMainSpec(Spec mainSpec) {
+        this.mainSpec = mainSpec;
+    }
+    
+    public void setSecondSpec(Spec secSpec) {
+        this.secSpec = secSpec;
     }
     public void setMainSpec(String mainSpec) {
         mainSpec = mainSpec.toLowerCase();
-        if(mainSpec.equals("dd")){
-            this.mainSpec = Spec.DD;
-        }else if(mainSpec.equals("tank")){
-            this.mainSpec = Spec.TANK;
-        }else if(mainSpec.equals("heal")||mainSpec.equals("heiler")){
-            this.mainSpec = Spec.HEAL;
-        }else if(mainSpec.equals("sup")||mainSpec.equals("support")){
-            this.mainSpec = Spec.SUPPORT;
+        switch(mainSpec){
+            case "tank":
+                this.mainSpec = Spec.TANK;
+                break;
+            case "heal":
+                this.mainSpec = Spec.HEAL;
+                break;
+            case "support":
+                this.mainSpec = Spec.SUPPORT;
+                break;
+            default:
+                this.mainSpec = Spec.DD;
+                break;
+        
         }
     }    
     
+    public void setSecondSpec(String secSpec) {
+        secSpec = secSpec.toLowerCase();
+        switch(secSpec){
+            case "dd":
+                this.secSpec = Spec.DD;
+                break;
+            case "tank":
+                this.secSpec = Spec.TANK;
+                break;
+            case "heal":
+                this.secSpec = Spec.HEAL;
+                break;
+            case "sup":
+                this.secSpec = Spec.SUPPORT;
+                break;
+            default:
+                this.secSpec = Spec.NONE;
+                break;
+        
+        }
+    }
     
+    @Override
+    public String toString(){
+        String out = "Player( ";
+        out+=name+" )[ ";
+        out+=role+" | ";
+        out+=getStringMainSpec()+" ; ";
+        out+=getStringSecondSpec()+" )";
+        return out;
+    }
 }

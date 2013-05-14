@@ -4,7 +4,7 @@
  */
 package Data;
 
-import InOut.PlayerReader;
+import InOut.FileHandler;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -15,36 +15,12 @@ import java.util.LinkedList;
 public class Cader {
     HashMap<String,Player> player;
 
-    LinkedList<Player> sks;
-
     public Cader() {
-        PlayerReader reader= new PlayerReader();
-        player = reader.read();
+        this.player = new HashMap<>();
     }
     
-    /**
-     *
-     * @param changed
-     * @return
-     */
-    public LinkedList<Player> newSKS(LinkedList<Player> changed){
-        LinkedList<Player> copy = (LinkedList<Player>)changed.clone();
-        LinkedList<Player> sksCopy = (LinkedList<Player>)sks.clone();
-        
-        for(int i =0;i<sksCopy.size();i++){
-            if(changed.contains(sksCopy.get(i))){
-                if(!(copy.getFirst().equals(sksCopy.get(i)))){
-                    sksCopy.set(i, copy.getFirst());
-                }
-                copy.removeFirst();
-            }
-        }
-        return sksCopy;
+    public HashMap<String, Player> getCader() {
+        return player;
     }
-    
-    
-    
-    
-    
     
 }

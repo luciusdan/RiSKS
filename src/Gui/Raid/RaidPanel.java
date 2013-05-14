@@ -2,7 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Gui;
+package Gui.Raid;
+
+import Data.Cader;
+import Data.Loot;
+import Data.Raid;
+import Data.Member;
+import Data.Member.State;
+import InOut.FileHandler;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -10,11 +23,25 @@ package Gui;
  */
 public class RaidPanel extends javax.swing.JPanel {
 
+    private Cader cader;
+    private Raid raid;
+    private FileHandler fileHandler;
+    private SetRaiderFrame setRaiderFrame;
+    private LootFrame lootFrame;
     /**
      * Creates new form RaidPanel
      */
-    public RaidPanel() {
+    public RaidPanel(Cader cader, FileHandler fileHandler) {
+        this.cader = cader;
+        this.raid = new Raid(new Date(),cader,true);
+        this.fileHandler = fileHandler;
+        RaidPanelAsParentInterface rppf = new RaidPanelAsParentInterface(this);
+        this.setRaiderFrame = new SetRaiderFrame(cader, rppf);
+        this.lootFrame = new LootFrame(rppf);
         initComponents();
+        
+        reshow();
+        
     }
 
     /**
@@ -26,84 +53,204 @@ public class RaidPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        PopupMenuMembers = new javax.swing.JPopupMenu();
+        lootAddDirectButton = new javax.swing.JMenuItem();
+        PopupMenuLoot = new javax.swing.JPopupMenu();
+        lootChangeButton = new javax.swing.JMenuItem();
+        lootAddButton = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        lootDelButton = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        tankHideCB = new javax.swing.JCheckBox();
-        ddHideCB = new javax.swing.JCheckBox();
-        healHideCB = new javax.swing.JCheckBox();
-        supHideCB = new javax.swing.JCheckBox();
-        roleFilterCB = new javax.swing.JComboBox();
+        hideCBTank = new javax.swing.JCheckBox();
+        hideCBDD = new javax.swing.JCheckBox();
+        hideCBHeal = new javax.swing.JCheckBox();
+        hideCBSup = new javax.swing.JCheckBox();
+        jPanel2 = new javax.swing.JPanel();
+        hideCBWarrior = new javax.swing.JCheckBox();
+        hideCBRouge = new javax.swing.JCheckBox();
+        hideCBCleric = new javax.swing.JCheckBox();
+        hideCBMage = new javax.swing.JCheckBox();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        memberTable = new javax.swing.JTable();
+        saveButton = new javax.swing.JButton();
+        changeMember = new javax.swing.JButton();
+        loadButton = new javax.swing.JButton();
+        createButton = new javax.swing.JButton();
+        jDateChooser = new com.toedter.calendar.JDateChooser();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lootTable = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        commentArea = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+
+        lootAddDirectButton.setText("Loot hinzufügen");
+        lootAddDirectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lootAddDirectButtonActionPerformed(evt);
+            }
+        });
+        PopupMenuMembers.add(lootAddDirectButton);
+
+        lootChangeButton.setText("loot ändern");
+        lootChangeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lootChangeButtonActionPerformed(evt);
+            }
+        });
+        PopupMenuLoot.add(lootChangeButton);
+
+        lootAddButton.setText("Loot hinzufügen");
+        lootAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lootAddButtonActionPerformed(evt);
+            }
+        });
+        PopupMenuLoot.add(lootAddButton);
+        PopupMenuLoot.add(jSeparator1);
+
+        lootDelButton.setText("Loot löschen");
+        lootDelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lootDelButtonActionPerformed(evt);
+            }
+        });
+        PopupMenuLoot.add(lootDelButton);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        tankHideCB.setSelected(true);
-        tankHideCB.setText("Tank's");
-
-        ddHideCB.setSelected(true);
-        ddHideCB.setText("DD'S");
-
-        healHideCB.setSelected(true);
-        healHideCB.setText("Heiler");
-
-        supHideCB.setSelected(true);
-        supHideCB.setText("Supporter");
-
-        roleFilterCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tank", "keine Tanks", "Heiler& Support", "Alle" }));
-        roleFilterCB.setSelectedIndex(3);
-        roleFilterCB.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                roleFilterCBItemStateChanged(evt);
-            }
-        });
-        roleFilterCB.addActionListener(new java.awt.event.ActionListener() {
+        hideCBTank.setSelected(true);
+        hideCBTank.setText("Tank's");
+        hideCBTank.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roleFilterCBActionPerformed(evt);
+                cbActionPerformed(evt);
             }
         });
+
+        hideCBDD.setSelected(true);
+        hideCBDD.setText("DD'S");
+        hideCBDD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBHeal.setSelected(true);
+        hideCBHeal.setText("Heiler");
+        hideCBHeal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBSup.setSelected(true);
+        hideCBSup.setText("Supporter");
+        hideCBSup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        hideCBWarrior.setSelected(true);
+        hideCBWarrior.setText("Krieger");
+        hideCBWarrior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBRouge.setSelected(true);
+        hideCBRouge.setText("Rouge");
+        hideCBRouge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBCleric.setSelected(true);
+        hideCBCleric.setText("Kleriker");
+        hideCBCleric.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        hideCBMage.setSelected(true);
+        hideCBMage.setText("Magier");
+        hideCBMage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(hideCBWarrior)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hideCBRouge)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(hideCBCleric)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hideCBMage)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(hideCBWarrior)
+                .addComponent(hideCBRouge)
+                .addComponent(hideCBCleric)
+                .addComponent(hideCBMage))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(tankHideCB)
+                .addComponent(hideCBTank)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ddHideCB)
+                .addComponent(hideCBDD)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(healHideCB)
+                .addComponent(hideCBHeal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(supHideCB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(roleFilterCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(hideCBSup)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(tankHideCB)
-                .addComponent(ddHideCB)
-                .addComponent(healHideCB)
-                .addComponent(supHideCB)
-                .addComponent(roleFilterCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hideCBTank)
+                    .addComponent(hideCBDD)
+                    .addComponent(hideCBHeal)
+                    .addComponent(hideCBSup))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        memberTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, "Test A", "1", "AX", null},
+                {null, "Test B", "2", "AY", null},
+                {null, "Test C", "3", "AFDf", null},
+                {null, "Test D", "4", null, null}
             },
             new String [] {
-                "Pos", "Name", "Klasse", "Main Rolle", "", "Moved"
+                "", "Name", "Klasse", "Main Rolle", "Second Rolle"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -114,63 +261,446 @@ public class RaidPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        memberTable.setComponentPopupMenu(PopupMenuMembers);
+        memberTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        memberTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(memberTable);
+        memberTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        saveButton.setText("save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        changeMember.setText("change Member");
+        changeMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeMemberActionPerformed(evt);
+            }
+        });
+
+        loadButton.setText("load");
+        loadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadButtonActionPerformed(evt);
+            }
+        });
+
+        createButton.setText("new");
+        createButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createButtonActionPerformed(evt);
+            }
+        });
+
+        jDateChooser.setDateFormatString("dd.MM.yyyy HH:mm");
+
+        lootTable.setAutoCreateRowSorter(true);
+        lootTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Test A", "1", "AX"},
+                {"Test B", "2", "AY"},
+                {"Test C", "3", "AFDf"},
+                {"Test D", "4", null}
+            },
+            new String [] {
+                "Name", "Item", "UhrZeit"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        lootTable.setComponentPopupMenu(PopupMenuLoot);
+        lootTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lootTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(lootTable);
+        lootTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        commentArea.setColumns(20);
+        commentArea.setRows(5);
+        jScrollPane1.setViewportView(commentArea);
+
+        jLabel1.setText("Kommentar:");
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(saveButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(loadButton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(createButton)
+                            .addComponent(changeMember))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))
+                        .addGap(8, 8, 8))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(saveButton)
+                        .addComponent(loadButton)
+                        .addComponent(createButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(changeMember))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void roleFilterCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleFilterCBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_roleFilterCBActionPerformed
+    private void cbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbActionPerformed
+        drawMembers();
+    }//GEN-LAST:event_cbActionPerformed
 
-    private void roleFilterCBItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roleFilterCBItemStateChanged
-        tankHideCB.setSelected(false);
-        ddHideCB.setSelected(false);
-        healHideCB.setSelected(false);
-        supHideCB.setSelected(false);
-        switch (roleFilterCB.getSelectedIndex()){
-            case 0 ://tanks
-                    tankHideCB.setSelected(true);
-                break;
-            default:// alle
-                    tankHideCB.setSelected(true);
-            case 1 ://-tanks
-                    ddHideCB.setSelected(true);
-            case 2 ://sup & healer
-                    healHideCB.setSelected(true);
-                    supHideCB.setSelected(true);
-                break;
+    private void changeMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeMemberActionPerformed
+        setRaiderFrame.open(raid);
+    }//GEN-LAST:event_changeMemberActionPerformed
+
+    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
+        JFrame frame = new JFrame("ChangeDialog");
+        int n = JOptionPane.showConfirmDialog(
+            frame,
+            "Bisherigen Änderungen werden gelöscht!\n Wirklich fortfahren?",
+            "Neuen Raid erstellen",
+            JOptionPane.YES_NO_OPTION);
+        if(n==0){
+            raid = new Raid(new Date(),cader,true);
+            reshow();
         }
-    }//GEN-LAST:event_roleFilterCBItemStateChanged
+    }//GEN-LAST:event_createButtonActionPerformed
 
+    private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
+         JFrame frame = new JFrame("ChangeDialog");    
+        int n = JOptionPane.showConfirmDialog(
+            frame,
+            "Bisherigen Änderungen werden gelöscht!\n Wirklich fortfahren?",
+            "Raid Laden",
+            JOptionPane.YES_NO_OPTION);
+        if(n==0){
+            Date date = fileHandler.getLastRaidDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH;mm");
+            raid = fileHandler.readRaid(date);
+            reshow();
+        }
+    }//GEN-LAST:event_loadButtonActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        raid.setComment(commentArea.getText());
+        JFrame frame = new JFrame("ChangeDialog");
+        if(raid.getTimestamp().equals(jDateChooser.getDate())){
+            System.out.println("Identisch");
+            int n = JOptionPane.showConfirmDialog(
+                frame,
+                "Wirklich speichern?\n Raid kann danach nicht mehr so leicht entfernt werden",
+                "Raid Speichern",
+                JOptionPane.YES_NO_OPTION);
+            if(n==0){
+                fileHandler.writeRaid(raid);
+            }
+        }else{
+            Date max= jDateChooser.getMaxSelectableDate();
+            Date min= jDateChooser.getMinSelectableDate();
+            Date set= jDateChooser.getDate();
+            if(set.after(min)&&set.before(max)){
+                fileHandler.removeRaid(raid.getTimestamp());
+                raid.setTimestamp(set);
+                fileHandler.writeRaid(raid);
+            }else{
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                JOptionPane.showMessageDialog(
+                frame,
+                "Das Datum "+dateFormat.format(set)+" liegt nicht zwischen den geforderten Zeiten:\n"+dateFormat.format(min)+"\n"+dateFormat.format(max),
+                "Falsches Datum",
+                JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void lootAddDirectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lootAddDirectButtonActionPerformed
+        int i = memberTable.getSelectedRow();
+        if(i>=0){
+            String name = (String)memberTable.getValueAt(i, 1);
+            addLoot(name);
+        }
+    }//GEN-LAST:event_lootAddDirectButtonActionPerformed
+
+    private void lootChangeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lootChangeButtonActionPerformed
+        int i = lootTable.getSelectedRow();
+        if(i>=0){
+            try {
+                SimpleDateFormat lootDateFormat = new SimpleDateFormat("HH:mm:ss");
+                String dateString = (String)lootTable.getValueAt(i, 2);
+                Date date = lootDateFormat.parse(dateString);
+                lootFrame.open(raid,date);
+            } catch (ParseException ex) {
+                System.out.println("FEHLER: Kann Datum des zu ändernen Loots nicht bestimmen!");
+            }
+        }
+    }//GEN-LAST:event_lootChangeButtonActionPerformed
+
+    private void lootAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lootAddButtonActionPerformed
+        int i = lootTable.getSelectedRow();
+        if(i>=0){
+            String name = (String)lootTable.getValueAt(i, 1);
+            addLoot(name);
+        }
+    }//GEN-LAST:event_lootAddButtonActionPerformed
+
+    private void lootDelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lootDelButtonActionPerformed
+        JFrame frame = new JFrame("ChangeDialog");
+        int n = JOptionPane.showConfirmDialog(
+            frame,
+            "Wirklich den Loot löschen?",
+            "Loot löschen",
+            JOptionPane.YES_NO_OPTION);
+        if(n==0){
+            try {
+                int i = lootTable.getSelectedRow();
+                SimpleDateFormat lootDateFormat = new SimpleDateFormat("HH:mm:ss");
+                String dateString = (String)lootTable.getValueAt(i, 2);
+                Date date = lootDateFormat.parse(dateString);
+                raid.removeLoot(date);
+                reshow();
+            } catch (ParseException ex) {
+            System.out.println("FEHLER: Kann Datum des Loots nicht bestimmen!");
+            }
+        }
+    }//GEN-LAST:event_lootDelButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         new SKSFrame(raid).setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void addLoot(String raiderName){
+        raid.setComment(commentArea.getText());
+        JFrame frame = new JFrame("Loot erstellen");
+        String name = JOptionPane.showInputDialog(
+            frame,
+            "Wirklich speichern?\n Raid kann danach nicht mehr so leicht entfernt werden",
+            "Raid Speichern",
+            JOptionPane.YES_NO_OPTION);
+        if(name!=null){
+            try {
+                Member member = raid.getMemberByName(raiderName);
+                //-- Date säubern --------------------------------------------------
+                SimpleDateFormat dateLootFormat = new SimpleDateFormat("HH:mm:ss");
+                String dateString = (String)dateLootFormat.format(new Date());
+            System.out.println("IN: "+dateString);
+                Date date = dateLootFormat.parse(dateString);
+                Loot loot = new Loot(date,member, name);
+                raid.addLoot(loot);
+                reshow();
+            } catch (ParseException ex) {
+            System.out.println("FEHLER: Kann Datum des neuen Loots nicht bestimmen!");
+            }
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox ddHideCB;
-    private javax.swing.JCheckBox healHideCB;
+    private javax.swing.JPopupMenu PopupMenuLoot;
+    private javax.swing.JPopupMenu PopupMenuMembers;
+    private javax.swing.JButton changeMember;
+    private javax.swing.JTextArea commentArea;
+    private javax.swing.JButton createButton;
+    private javax.swing.JCheckBox hideCBCleric;
+    private javax.swing.JCheckBox hideCBDD;
+    private javax.swing.JCheckBox hideCBHeal;
+    private javax.swing.JCheckBox hideCBMage;
+    private javax.swing.JCheckBox hideCBRouge;
+    private javax.swing.JCheckBox hideCBSup;
+    private javax.swing.JCheckBox hideCBTank;
+    private javax.swing.JCheckBox hideCBWarrior;
+    private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JDateChooser jDateChooser;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JComboBox roleFilterCB;
-    private javax.swing.JCheckBox supHideCB;
-    private javax.swing.JCheckBox tankHideCB;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JButton loadButton;
+    private javax.swing.JMenuItem lootAddButton;
+    private javax.swing.JMenuItem lootAddDirectButton;
+    private javax.swing.JMenuItem lootChangeButton;
+    private javax.swing.JMenuItem lootDelButton;
+    private javax.swing.JTable lootTable;
+    private javax.swing.JTable memberTable;
+    private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
+    
+    public void drawMembers(){
+        DefaultTableModel tableModel = (DefaultTableModel)memberTable.getModel();
+        Member current;
+        Object[] newRow;
+        raid.recalcSKS();
+        //clear ----------------------------------------------------------------
+        while(tableModel.getRowCount()>0){
+            tableModel.removeRow(0);
+        }
+        //fill -----------------------------------------------------------------
+        int caderSize= raid.getMembersNames().length;
+        for(int i=0;i<raid.getSKSListLength();i++){
+            current = raid.getMemberBySKS(i);
+            if(askToShowView(raid.getMemberBySKS(i))){
+                newRow= new Object[5];
+                newRow[0]= raid.getSKSPos(current)+1;
+                newRow[1]= current.getPlayer().getName();
+                newRow[2]= current.getPlayer().getStringRole();
+                newRow[3]= current.getPlayer().getStringMainSpec();
+                newRow[4]= current.getPlayer().getStringSecondSpec();
+                tableModel.addRow(newRow);
+            }
+        }
+    }
+
+    public void drawLoot(){
+        DefaultTableModel tableModel = (DefaultTableModel)lootTable.getModel();
+        Loot loot;
+        Date[] dates = raid.getlootDates();
+        Object[] newRow;
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        
+        //clear ----------------------------------------------------------------
+        while(tableModel.getRowCount()>0){
+            tableModel.removeRow(0);
+        }
+        //fill -----------------------------------------------------------------
+        for(int i=0;i<dates.length;i++){
+            loot = raid.getLoot(dates[i]);
+                newRow= new Object[3];
+                newRow[0]= loot.getMember().getPlayer().getName();
+                newRow[1]= loot.getName();
+                newRow[2]= dateFormat.format(loot.getTimestamp());
+                tableModel.addRow(newRow);
+        }
+    }
+    
+    //sort ---------------------------------------------------------------------
+    private boolean askToShowView(Member member){
+        //TODO System.out.println("Raider:"+member.getPlayer().getName()+" | "+member.getState());
+            if(member.getState().equals(State.TEILG)){
+                switch(member.getPlayer().getMainSpec()){
+                    case TANK:
+                        if(!hideCBTank.isSelected()){
+                            return false;
+                        }
+                        break;
+                    case DD:
+                        if(!hideCBDD.isSelected()){
+                            return false;
+                        }
+                        break;
+                    case HEAL:
+                        if(!hideCBHeal.isSelected()){
+                            return false;
+                        }
+                        break;
+                    case SUPPORT:
+                        if(!hideCBSup.isSelected()){
+                            return false;
+                        }
+                        break;
+                    default:
+                        return false;
+
+                }
+                switch(member.getPlayer().getRole()){
+                    case WARRIOR:
+                        if(!hideCBWarrior.isSelected()){
+                            return false;
+                        }
+                        break;
+                    case ROUGE:
+                        if(!hideCBRouge.isSelected()){
+                            return false;
+                        }
+                        break;
+                    case CLERIC:
+                        if(!hideCBCleric.isSelected()){
+                            return false;
+                        }
+                        break;
+                    case MAGE:
+                        if(!hideCBMage.isSelected()){
+                            return false;
+                        }
+                        break;
+                    default:
+                        return false;
+
+                }
+                return true;
+            }else{
+                return false;
+            }
+    }
+
+    public void reshow(){
+        Date[] range = fileHandler.getValidDateRange(raid);
+        jDateChooser.setDate(raid.getTimestamp());
+        jDateChooser.setMaxSelectableDate(range[1]);
+        jDateChooser.setMinSelectableDate(range[0]);
+        
+        commentArea.setText(raid.getComment());
+        drawMembers();
+        drawLoot();
+    }
+
 }
