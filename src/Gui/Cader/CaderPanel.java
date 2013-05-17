@@ -5,12 +5,9 @@
 package Gui.Cader;
 
 import Data.Cader;
-import Data.Player;
-import java.util.HashMap;
+import Data.Member;
 import java.util.LinkedList;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -42,23 +39,28 @@ public class CaderPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        playerPopupMenu = new javax.swing.JPopupMenu();
+        MemberPopupMenu = new javax.swing.JPopupMenu();
         changePlayer = new javax.swing.JMenuItem();
         remPlayer = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        memberPopUpSeperator = new javax.swing.JPopupMenu.Separator();
         createPlayer = new javax.swing.JMenuItem();
-        jPanel1 = new javax.swing.JPanel();
+        filterBackground = new javax.swing.JPanel();
         hideCBTank = new javax.swing.JCheckBox();
         hideCBDD = new javax.swing.JCheckBox();
         hideCBHeal = new javax.swing.JCheckBox();
         hideCBSup = new javax.swing.JCheckBox();
-        jPanel2 = new javax.swing.JPanel();
-        hideCBWarrior = new javax.swing.JCheckBox();
-        hideCBRouge = new javax.swing.JCheckBox();
+        filterSeparator = new javax.swing.JSeparator();
         hideCBCleric = new javax.swing.JCheckBox();
         hideCBMage = new javax.swing.JCheckBox();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        hideCBRouge = new javax.swing.JCheckBox();
+        hideCBWarrior = new javax.swing.JCheckBox();
+        specFilterLabel = new javax.swing.JLabel();
+        roleFilterLabel = new javax.swing.JLabel();
+        caderScrollPane = new javax.swing.JScrollPane();
         caderTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        timestampLabel = new javax.swing.JLabel();
+        countLabel = new javax.swing.JLabel();
 
         changePlayer.setText("ändern");
         changePlayer.addActionListener(new java.awt.event.ActionListener() {
@@ -66,11 +68,16 @@ public class CaderPanel extends javax.swing.JPanel {
                 changePlayerActionPerformed(evt);
             }
         });
-        playerPopupMenu.add(changePlayer);
+        MemberPopupMenu.add(changePlayer);
 
         remPlayer.setText("löschen");
-        playerPopupMenu.add(remPlayer);
-        playerPopupMenu.add(jSeparator1);
+        remPlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remPlayerActionPerformed(evt);
+            }
+        });
+        MemberPopupMenu.add(remPlayer);
+        MemberPopupMenu.add(memberPopUpSeperator);
 
         createPlayer.setText("neu");
         createPlayer.addActionListener(new java.awt.event.ActionListener() {
@@ -78,9 +85,9 @@ public class CaderPanel extends javax.swing.JPanel {
                 createPlayerActionPerformed(evt);
             }
         });
-        playerPopupMenu.add(createPlayer);
+        MemberPopupMenu.add(createPlayer);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        filterBackground.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         hideCBTank.setSelected(true);
         hideCBTank.setText("Tank's");
@@ -91,7 +98,7 @@ public class CaderPanel extends javax.swing.JPanel {
         });
 
         hideCBDD.setSelected(true);
-        hideCBDD.setText("DD'S");
+        hideCBDD.setText("Schaden");
         hideCBDD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbActionPerformed(evt);
@@ -114,24 +121,6 @@ public class CaderPanel extends javax.swing.JPanel {
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        hideCBWarrior.setSelected(true);
-        hideCBWarrior.setText("Krieger");
-        hideCBWarrior.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbActionPerformed(evt);
-            }
-        });
-
-        hideCBRouge.setSelected(true);
-        hideCBRouge.setText("Rouge");
-        hideCBRouge.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbActionPerformed(evt);
-            }
-        });
-
         hideCBCleric.setSelected(true);
         hideCBCleric.setText("Kleriker");
         hideCBCleric.addActionListener(new java.awt.event.ActionListener() {
@@ -148,73 +137,92 @@ public class CaderPanel extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(hideCBWarrior)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBRouge)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBCleric)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hideCBMage)
-                .addContainerGap(154, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(hideCBWarrior)
-                .addComponent(hideCBRouge)
-                .addComponent(hideCBCleric)
-                .addComponent(hideCBMage))
-        );
+        hideCBRouge.setSelected(true);
+        hideCBRouge.setText("Rouge");
+        hideCBRouge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(hideCBTank)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBDD)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBHeal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hideCBSup)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        hideCBWarrior.setSelected(true);
+        hideCBWarrior.setText("Krieger");
+        hideCBWarrior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        specFilterLabel.setText("Zeige Rollen:");
+
+        roleFilterLabel.setText("Zeige Klassen:");
+
+        javax.swing.GroupLayout filterBackgroundLayout = new javax.swing.GroupLayout(filterBackground);
+        filterBackground.setLayout(filterBackgroundLayout);
+        filterBackgroundLayout.setHorizontalGroup(
+            filterBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(filterBackgroundLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(filterBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(filterSeparator, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, filterBackgroundLayout.createSequentialGroup()
+                        .addComponent(roleFilterLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(hideCBWarrior)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBRouge)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBCleric)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBMage))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, filterBackgroundLayout.createSequentialGroup()
+                        .addComponent(specFilterLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(hideCBTank)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBDD)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hideCBHeal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hideCBSup)))
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        filterBackgroundLayout.setVerticalGroup(
+            filterBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(filterBackgroundLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(filterBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hideCBTank)
                     .addComponent(hideCBDD)
                     .addComponent(hideCBHeal)
-                    .addComponent(hideCBSup))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hideCBSup)
+                    .addComponent(specFilterLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(filterSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(filterBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hideCBMage)
+                    .addComponent(hideCBCleric)
+                    .addComponent(hideCBRouge)
+                    .addComponent(hideCBWarrior)
+                    .addComponent(roleFilterLabel))
+                .addContainerGap())
         );
 
         caderTable.setAutoCreateRowSorter(true);
         caderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Test A", "1", "AX", null},
-                {"Test B", "2", "AY", null},
-                {"Test C", "3", "AFDf", null},
-                {"Test D", "4", null, null}
+
             },
             new String [] {
-                "Name", "Klasse", "Main Rolle", "Second Rolle"
+                "Name", "Klasse", "Main Rolle", "Second Rolle", "SKS-Raid's"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -225,28 +233,55 @@ public class CaderPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        caderTable.setColumnSelectionAllowed(true);
-        caderTable.setComponentPopupMenu(playerPopupMenu);
+        caderTable.setComponentPopupMenu(MemberPopupMenu);
         caderTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(caderTable);
+        caderScrollPane.setViewportView(caderTable);
         caderTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Allgemein\n"));
+
+        timestampLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        timestampLabel.setText("Stand: 00.00.0000 00:00");
+
+        countLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        countLabel.setText("Anzahl: 0");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(timestampLabel)
+            .addComponent(countLabel)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(timestampLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(countLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(filterBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(caderScrollPane))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(filterBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                .addComponent(caderScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -256,20 +291,31 @@ public class CaderPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cbActionPerformed
 
     private void createPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPlayerActionPerformed
+        //TODO
         cpf.newPlayer();
     }//GEN-LAST:event_createPlayerActionPerformed
 
     private void changePlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePlayerActionPerformed
+        //TODO
         int pos = caderTable.getSelectedRow();
         String name = (String)caderTable.getValueAt(pos,0);
-        Player player = cader.getCader().get(name);
-        cpf.editPlayer(player);
+        Member member = cader.getMember(name);
+        cpf.editPlayer(member);
     }//GEN-LAST:event_changePlayerActionPerformed
 
+    private void remPlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remPlayerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_remPlayerActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu MemberPopupMenu;
+    private javax.swing.JScrollPane caderScrollPane;
     private javax.swing.JTable caderTable;
     private javax.swing.JMenuItem changePlayer;
+    private javax.swing.JLabel countLabel;
     private javax.swing.JMenuItem createPlayer;
+    private javax.swing.JPanel filterBackground;
+    private javax.swing.JSeparator filterSeparator;
     private javax.swing.JCheckBox hideCBCleric;
     private javax.swing.JCheckBox hideCBDD;
     private javax.swing.JCheckBox hideCBHeal;
@@ -279,44 +325,45 @@ public class CaderPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox hideCBTank;
     private javax.swing.JCheckBox hideCBWarrior;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu playerPopupMenu;
+    private javax.swing.JPopupMenu.Separator memberPopUpSeperator;
     private javax.swing.JMenuItem remPlayer;
+    private javax.swing.JLabel roleFilterLabel;
+    private javax.swing.JLabel specFilterLabel;
+    private javax.swing.JLabel timestampLabel;
     // End of variables declaration//GEN-END:variables
     
     private void setCaderView(){
         DefaultTableModel tableModel = (DefaultTableModel)caderTable.getModel();
-        HashMap<String,Player> caderMember =cader.getCader();
-        String[] names= caderMember.keySet().toArray(new String[caderMember.size()]);
-        names= filterCaderView(names);
-        Player current;
+        String[] names= filteredCaderView();
+        Member current;
         Object[] newRow;
+        timestampLabel.setText("Stand: "+Cader.showDateFormat.format(cader.getTimestamp()));
+        countLabel.setText("Anzahl: "+cader.getMemberNames().length);
         //clear --------------------------------------------------------------------
         while(tableModel.getRowCount()>0){
             tableModel.removeRow(0);
         }
         //fill ---------------------------------------------------------------------
         for(int i=0;i<names.length;i++){
-            current = caderMember.get(names[i]);
-            newRow= new Object[4];
+            current = cader.getMember(names[i]);
+            newRow= new Object[5];
             newRow[0]= current.getName();
             newRow[1]= current.getStringRole();
             newRow[2]= current.getStringMainSpec();
             newRow[3]= current.getStringSecondSpec();
+            newRow[4]= current.getRaidCount();
             tableModel.addRow(newRow);
         }
     }
     
     //sort ---------------------------------------------------------------------
-    private String[] filterCaderView(String[] names){
-        Player current;
-        LinkedList<String> newNames = new LinkedList();
-        
+    private String[] filteredCaderView(){
+        Member current;
+        LinkedList<String> newNames = new LinkedList<>();
+        String[] names = cader.getMemberNames();
         boolean show;
         for (int i=0;i<names.length;i++){
-            current = cader.getCader().get(names[i]);
+            current = cader.getMember(names[i]);
             switch(current.getMainSpec()){
                 case TANK:
                     show = hideCBTank.isSelected();

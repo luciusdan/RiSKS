@@ -16,6 +16,7 @@ import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -26,21 +27,26 @@ public class RaidPanel extends javax.swing.JPanel {
     private Cader cader;
     private Raid raid;
     private FileHandler fileHandler;
+    private LoadRaidFrame loadRaidFrame;
     private SetRaiderFrame setRaiderFrame;
     private LootFrame lootFrame;
     /**
      * Creates new form RaidPanel
      */
-    public RaidPanel(Cader cader, FileHandler fileHandler) {
+    public RaidPanel(Cader cader) {
         this.cader = cader;
         this.raid = new Raid(new Date(),cader,true);
-        this.fileHandler = fileHandler;
+        this.fileHandler = new FileHandler(cader);
         RaidPanelAsParentInterface rppf = new RaidPanelAsParentInterface(this);
         this.setRaiderFrame = new SetRaiderFrame(cader, rppf);
         this.lootFrame = new LootFrame(rppf);
+        this.loadRaidFrame = new LoadRaidFrame(cader, rppf);
         initComponents();
+        TableColumn col =memberTable.getColumnModel().getColumn(0);
+        col.setMaxWidth(30);
+        col.setResizable(false);
         
-        reshow();
+        drawAll();
         
     }
 
@@ -55,33 +61,42 @@ public class RaidPanel extends javax.swing.JPanel {
 
         PopupMenuMembers = new javax.swing.JPopupMenu();
         lootAddDirectButton = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        changeMemberButton2 = new javax.swing.JMenuItem();
         PopupMenuLoot = new javax.swing.JPopupMenu();
         lootChangeButton = new javax.swing.JMenuItem();
         lootAddButton = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         lootDelButton = new javax.swing.JMenuItem();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        commentArea = new javax.swing.JTextArea();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lootTable = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jDateChooser = new com.toedter.calendar.JDateChooser();
+        jPanel6 = new javax.swing.JPanel();
+        loadButton = new javax.swing.JButton();
+        createButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        memberTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         hideCBTank = new javax.swing.JCheckBox();
         hideCBDD = new javax.swing.JCheckBox();
         hideCBHeal = new javax.swing.JCheckBox();
         hideCBSup = new javax.swing.JCheckBox();
-        jPanel2 = new javax.swing.JPanel();
-        hideCBWarrior = new javax.swing.JCheckBox();
-        hideCBRouge = new javax.swing.JCheckBox();
-        hideCBCleric = new javax.swing.JCheckBox();
         hideCBMage = new javax.swing.JCheckBox();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        memberTable = new javax.swing.JTable();
-        saveButton = new javax.swing.JButton();
-        changeMember = new javax.swing.JButton();
-        loadButton = new javax.swing.JButton();
-        createButton = new javax.swing.JButton();
-        jDateChooser = new com.toedter.calendar.JDateChooser();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        lootTable = new javax.swing.JTable();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        commentArea = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
+        hideCBCleric = new javax.swing.JCheckBox();
+        hideCBRouge = new javax.swing.JCheckBox();
+        hideCBWarrior = new javax.swing.JCheckBox();
+        specFilterLabel = new javax.swing.JLabel();
+        filterSeparator = new javax.swing.JSeparator();
+        roleFilterLabel = new javax.swing.JLabel();
+        changeMemberButton1 = new javax.swing.JButton();
+        countLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         lootAddDirectButton.setText("Loot hinzufügen");
@@ -91,6 +106,15 @@ public class RaidPanel extends javax.swing.JPanel {
             }
         });
         PopupMenuMembers.add(lootAddDirectButton);
+        PopupMenuMembers.add(jSeparator2);
+
+        changeMemberButton2.setText("Teilnehmer ändern");
+        changeMemberButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeMemberButtonActionPerformed(evt);
+            }
+        });
+        PopupMenuMembers.add(changeMemberButton2);
 
         lootChangeButton.setText("loot ändern");
         lootChangeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -116,6 +140,164 @@ public class RaidPanel extends javax.swing.JPanel {
             }
         });
         PopupMenuLoot.add(lootDelButton);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Kommentar"));
+
+        commentArea.setColumns(20);
+        commentArea.setRows(5);
+        jScrollPane1.setViewportView(commentArea);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Loot"));
+
+        lootTable.setAutoCreateRowSorter(true);
+        lootTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Item", "UhrZeit"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        lootTable.setComponentPopupMenu(PopupMenuLoot);
+        lootTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lootTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(lootTable);
+        lootTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Datum"));
+
+        jDateChooser.setDateFormatString("dd.MM.yyyy HH:mm");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        loadButton.setText("laden");
+        loadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadButtonActionPerformed(evt);
+            }
+        });
+
+        createButton.setText("neu");
+        createButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createButtonActionPerformed(evt);
+            }
+        });
+
+        saveButton.setText("speichern");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(createButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loadButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(loadButton)
+                .addGap(18, 18, 18)
+                .addComponent(createButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(saveButton)
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Teilnehmer"));
+
+        memberTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", "Name", "Klasse", "Main Rolle", "Second Rolle"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        memberTable.setComponentPopupMenu(PopupMenuMembers);
+        memberTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        memberTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(memberTable);
+        memberTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -151,19 +333,9 @@ public class RaidPanel extends javax.swing.JPanel {
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        hideCBWarrior.setSelected(true);
-        hideCBWarrior.setText("Krieger");
-        hideCBWarrior.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbActionPerformed(evt);
-            }
-        });
-
-        hideCBRouge.setSelected(true);
-        hideCBRouge.setText("Rouge");
-        hideCBRouge.addActionListener(new java.awt.event.ActionListener() {
+        hideCBMage.setSelected(true);
+        hideCBMage.setText("Magier");
+        hideCBMage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbActionPerformed(evt);
             }
@@ -177,166 +349,119 @@ public class RaidPanel extends javax.swing.JPanel {
             }
         });
 
-        hideCBMage.setSelected(true);
-        hideCBMage.setText("Magier");
-        hideCBMage.addActionListener(new java.awt.event.ActionListener() {
+        hideCBRouge.setSelected(true);
+        hideCBRouge.setText("Rouge");
+        hideCBRouge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(hideCBWarrior)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBRouge)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBCleric)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hideCBMage)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(hideCBWarrior)
-                .addComponent(hideCBRouge)
-                .addComponent(hideCBCleric)
-                .addComponent(hideCBMage))
-        );
+        hideCBWarrior.setSelected(true);
+        hideCBWarrior.setText("Krieger");
+        hideCBWarrior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbActionPerformed(evt);
+            }
+        });
+
+        specFilterLabel.setText("Zeige Rollen:");
+
+        roleFilterLabel.setText("Zeige Klassen:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(hideCBTank)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBDD)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hideCBHeal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(hideCBSup)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(specFilterLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addComponent(hideCBTank)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBDD)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBHeal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hideCBSup)
+                        .addGap(20, 20, 20))
+                    .addComponent(filterSeparator)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(roleFilterLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBWarrior)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBRouge)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hideCBCleric)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hideCBMage)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hideCBTank)
                     .addComponent(hideCBDD)
                     .addComponent(hideCBHeal)
-                    .addComponent(hideCBSup))
+                    .addComponent(hideCBSup)
+                    .addComponent(specFilterLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(filterSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hideCBWarrior)
+                    .addComponent(hideCBRouge)
+                    .addComponent(hideCBCleric)
+                    .addComponent(hideCBMage)
+                    .addComponent(roleFilterLabel))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        memberTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, "Test A", "1", "AX", null},
-                {null, "Test B", "2", "AY", null},
-                {null, "Test C", "3", "AFDf", null},
-                {null, "Test D", "4", null, null}
-            },
-            new String [] {
-                "", "Name", "Klasse", "Main Rolle", "Second Rolle"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        memberTable.setComponentPopupMenu(PopupMenuMembers);
-        memberTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        memberTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(memberTable);
-        memberTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
-        saveButton.setText("save");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
+        changeMemberButton1.setText("Teilnehmer ändern");
+        changeMemberButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
+                changeMemberButtonActionPerformed(evt);
             }
         });
 
-        changeMember.setText("change Member");
-        changeMember.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeMemberActionPerformed(evt);
-            }
-        });
+        countLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        countLabel.setText("00/00");
 
-        loadButton.setText("load");
-        loadButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadButtonActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(changeMemberButton1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addComponent(countLabel)))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(changeMemberButton1)
+                    .addComponent(countLabel))
+                .addGap(5, 5, 5)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                .addGap(9, 9, 9))
+        );
 
-        createButton.setText("new");
-        createButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createButtonActionPerformed(evt);
-            }
-        });
-
-        jDateChooser.setDateFormatString("dd.MM.yyyy HH:mm");
-
-        lootTable.setAutoCreateRowSorter(true);
-        lootTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"Test A", "1", "AX"},
-                {"Test B", "2", "AY"},
-                {"Test C", "3", "AFDf"},
-                {"Test D", "4", null}
-            },
-            new String [] {
-                "Name", "Item", "UhrZeit"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        lootTable.setComponentPopupMenu(PopupMenuLoot);
-        lootTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        lootTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(lootTable);
-        lootTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
-        commentArea.setColumns(20);
-        commentArea.setRows(5);
-        jScrollPane1.setViewportView(commentArea);
-
-        jLabel1.setText("Kommentar:");
-
-        jButton1.setText("jButton1");
+        jButton1.setText("SKS-Liste");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -349,57 +474,43 @@ public class RaidPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(saveButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(loadButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(createButton)
-                            .addComponent(changeMember))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))
-                        .addGap(8, 8, 8))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addContainerGap())))
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 16, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(saveButton)
-                        .addComponent(loadButton)
-                        .addComponent(createButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(changeMember))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -407,9 +518,10 @@ public class RaidPanel extends javax.swing.JPanel {
         drawMembers();
     }//GEN-LAST:event_cbActionPerformed
 
-    private void changeMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeMemberActionPerformed
+    private void changeMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeMemberButtonActionPerformed
+        setRaiderFrame.setLocation(this.getLocationOnScreen());
         setRaiderFrame.open(raid);
-    }//GEN-LAST:event_changeMemberActionPerformed
+    }//GEN-LAST:event_changeMemberButtonActionPerformed
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         JFrame frame = new JFrame("ChangeDialog");
@@ -420,12 +532,14 @@ public class RaidPanel extends javax.swing.JPanel {
             JOptionPane.YES_NO_OPTION);
         if(n==0){
             raid = new Raid(new Date(),cader,true);
-            reshow();
+            drawAll();
         }
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-         JFrame frame = new JFrame("ChangeDialog");    
+        loadRaidFrame.open();
+        /*
+                 JFrame frame = new JFrame("ChangeDialog");    
         int n = JOptionPane.showConfirmDialog(
             frame,
             "Bisherigen Änderungen werden gelöscht!\n Wirklich fortfahren?",
@@ -433,10 +547,9 @@ public class RaidPanel extends javax.swing.JPanel {
             JOptionPane.YES_NO_OPTION);
         if(n==0){
             Date date = fileHandler.getLastRaidDate();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH;mm");
             raid = fileHandler.readRaid(date);
-            reshow();
-        }
+            drawAll(); 
+        }//*/
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -446,7 +559,7 @@ public class RaidPanel extends javax.swing.JPanel {
             System.out.println("Identisch");
             int n = JOptionPane.showConfirmDialog(
                 frame,
-                "Wirklich speichern?\n Raid kann danach nicht mehr so leicht entfernt werden",
+                "Wirklich speichern? Raid existiert bereits\n",
                 "Raid Speichern",
                 JOptionPane.YES_NO_OPTION);
             if(n==0){
@@ -486,7 +599,8 @@ public class RaidPanel extends javax.swing.JPanel {
                 SimpleDateFormat lootDateFormat = new SimpleDateFormat("HH:mm:ss");
                 String dateString = (String)lootTable.getValueAt(i, 2);
                 Date date = lootDateFormat.parse(dateString);
-                lootFrame.open(raid,date);
+                lootFrame.setLocation(this.getLocationOnScreen()); 
+                lootFrame.open(raid,date);                                         
             } catch (ParseException ex) {
                 System.out.println("FEHLER: Kann Datum des zu ändernen Loots nicht bestimmen!");
             }
@@ -515,7 +629,7 @@ public class RaidPanel extends javax.swing.JPanel {
                 String dateString = (String)lootTable.getValueAt(i, 2);
                 Date date = lootDateFormat.parse(dateString);
                 raid.removeLoot(date);
-                reshow();
+                drawAll();
             } catch (ParseException ex) {
             System.out.println("FEHLER: Kann Datum des Loots nicht bestimmen!");
             }
@@ -523,7 +637,10 @@ public class RaidPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_lootDelButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         new SKSFrame(raid).setVisible(true);
+        SKSFrame frame = new SKSFrame(raid);
+        frame.setLocation(this.getLocationOnScreen()); 
+        frame.setVisible(true);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void addLoot(String raiderName){
@@ -531,9 +648,9 @@ public class RaidPanel extends javax.swing.JPanel {
         JFrame frame = new JFrame("Loot erstellen");
         String name = JOptionPane.showInputDialog(
             frame,
-            "Wirklich speichern?\n Raid kann danach nicht mehr so leicht entfernt werden",
-            "Raid Speichern",
-            JOptionPane.YES_NO_OPTION);
+            "Gebe die Info's zum Gegenstand ein.\n",
+            "Loot erstellen",
+            JOptionPane.DEFAULT_OPTION);
         if(name!=null){
             try {
                 Member member = raid.getMemberByName(raiderName);
@@ -544,7 +661,7 @@ public class RaidPanel extends javax.swing.JPanel {
                 Date date = dateLootFormat.parse(dateString);
                 Loot loot = new Loot(date,member, name);
                 raid.addLoot(loot);
-                reshow();
+                drawAll();
             } catch (ParseException ex) {
             System.out.println("FEHLER: Kann Datum des neuen Loots nicht bestimmen!");
             }
@@ -554,9 +671,12 @@ public class RaidPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPopupMenu PopupMenuLoot;
     private javax.swing.JPopupMenu PopupMenuMembers;
-    private javax.swing.JButton changeMember;
+    private javax.swing.JButton changeMemberButton1;
+    private javax.swing.JMenuItem changeMemberButton2;
     private javax.swing.JTextArea commentArea;
+    private javax.swing.JLabel countLabel;
     private javax.swing.JButton createButton;
+    private javax.swing.JSeparator filterSeparator;
     private javax.swing.JCheckBox hideCBCleric;
     private javax.swing.JCheckBox hideCBDD;
     private javax.swing.JCheckBox hideCBHeal;
@@ -567,13 +687,17 @@ public class RaidPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox hideCBWarrior;
     private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateChooser;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JButton loadButton;
     private javax.swing.JMenuItem lootAddButton;
     private javax.swing.JMenuItem lootAddDirectButton;
@@ -581,7 +705,9 @@ public class RaidPanel extends javax.swing.JPanel {
     private javax.swing.JMenuItem lootDelButton;
     private javax.swing.JTable lootTable;
     private javax.swing.JTable memberTable;
+    private javax.swing.JLabel roleFilterLabel;
     private javax.swing.JButton saveButton;
+    private javax.swing.JLabel specFilterLabel;
     // End of variables declaration//GEN-END:variables
     
     public void drawMembers(){
@@ -600,13 +726,14 @@ public class RaidPanel extends javax.swing.JPanel {
             if(askToShowView(raid.getMemberBySKS(i))){
                 newRow= new Object[5];
                 newRow[0]= raid.getSKSPos(current)+1;
-                newRow[1]= current.getPlayer().getName();
-                newRow[2]= current.getPlayer().getStringRole();
-                newRow[3]= current.getPlayer().getStringMainSpec();
-                newRow[4]= current.getPlayer().getStringSecondSpec();
+                newRow[1]= current.getName();
+                newRow[2]= current.getStringRole();
+                newRow[3]= current.getStringMainSpec();
+                newRow[4]= current.getStringSecondSpec();
                 tableModel.addRow(newRow);
             }
         }
+        countLabel.setText(tableModel.getRowCount()+"/"+caderSize);
     }
 
     public void drawLoot(){
@@ -625,7 +752,7 @@ public class RaidPanel extends javax.swing.JPanel {
         for(int i=0;i<dates.length;i++){
             loot = raid.getLoot(dates[i]);
                 newRow= new Object[3];
-                newRow[0]= loot.getMember().getPlayer().getName();
+                newRow[0]= loot.getMember().getName();
                 newRow[1]= loot.getName();
                 newRow[2]= dateFormat.format(loot.getTimestamp());
                 tableModel.addRow(newRow);
@@ -636,7 +763,7 @@ public class RaidPanel extends javax.swing.JPanel {
     private boolean askToShowView(Member member){
         //TODO System.out.println("Raider:"+member.getPlayer().getName()+" | "+member.getState());
             if(member.getState().equals(State.TEILG)){
-                switch(member.getPlayer().getMainSpec()){
+                switch(member.getMainSpec()){
                     case TANK:
                         if(!hideCBTank.isSelected()){
                             return false;
@@ -661,7 +788,7 @@ public class RaidPanel extends javax.swing.JPanel {
                         return false;
 
                 }
-                switch(member.getPlayer().getRole()){
+                switch(member.getRole()){
                     case WARRIOR:
                         if(!hideCBWarrior.isSelected()){
                             return false;
@@ -692,7 +819,7 @@ public class RaidPanel extends javax.swing.JPanel {
             }
     }
 
-    public void reshow(){
+    public void drawAll(){
         Date[] range = fileHandler.getValidDateRange(raid);
         jDateChooser.setDate(raid.getTimestamp());
         jDateChooser.setMaxSelectableDate(range[1]);
@@ -703,4 +830,7 @@ public class RaidPanel extends javax.swing.JPanel {
         drawLoot();
     }
 
+    public void setRaid(Raid raid){
+        this.raid = raid;
+    }
 }

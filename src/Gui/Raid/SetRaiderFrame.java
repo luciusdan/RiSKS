@@ -312,15 +312,15 @@ public class SetRaiderFrame extends javax.swing.JFrame {
         for(int i=0;i<names.length;i++){
             currentRaider = raid.getMemberByName(names[i]);
             Role filterRole = getFilter();
-            Role role = currentRaider.getPlayer().getRole();
+            Role role = currentRaider.getRole();
             if(filterRole==null||role.equals(filterRole)){
                 if(currentRaider.getState().equals(State.ABWESEND)){
                     newRow = new Object[1];
-                    newRow[0]= currentRaider.getPlayer().getName();
+                    newRow[0]= currentRaider.getName();
                     caderModel.addRow(newRow);
                 }else{
                     newRow= new Object[2];
-                    newRow[0]= currentRaider.getPlayer().getName();
+                    newRow[0]= currentRaider.getName();
                     newRow[1]= currentRaider.getState().equals(State.ERSATZ);
                     raidModel.addRow(newRow);
                 }

@@ -1,55 +1,72 @@
 /*
- * Class zum speichern von dirketen Informationen der Spieler.
+ * Klasse zum speichern von direkten Informationen der Spieler.
  * name = Char Name des Spielers
  * role = Klasse des Spielers
- * MainSpec = da nur für main Rolle Spec nötig: Main Rolle (Tank/Heiler/DD/Sup
+ * 
+ * Version 2.0
  */
 package Data;
 
-import java.util.Date;
 
 /**
- *
+ * Objekt welches einen Spieler aus Rift repräsentiert.
+ * Dabei werden folgende Informationen verwendet:
+ * <p>-. Rolle: Cleric, Mage, Rouge oder Warrior
+ * <p>-. Datum des Cader-Beitritts
  * @author Dirk
  */
 public class Player {
+    //-- Enum for Player -------------------------------------------------------
     public enum Role{
         CLERIC,MAGE,ROUGE,WARRIOR
     }
-    public enum Spec{
-        TANK,DD,HEAL,SUPPORT,NONE
-    }
     
-    
+    //-- Variables for Player --------------------------------------------------
+    private String name;
+    private Role role;
+
+    //-- Constructor for Player ------------------------------------------------
+    /**
+     * Konstructor
+     * @param name Name des zuerstellenen Player
+     */
     public Player(String name) {
         this.name = name;
         this.role = Role.CLERIC;
-        this.mainSpec = Spec.DD;
-        this.secSpec = Spec.NONE;
-        this.joining = new Date();
     }
-    
-    public Player(String name, Date joining) {
-        this.name = name;
-        this.role = Role.CLERIC;
-        this.mainSpec = Spec.DD;
-        this.secSpec = Spec.NONE;
-        this.joining = joining;
-    }
-    
-    private String name;
-    private Role role;
-    private Spec mainSpec;
-    private Spec secSpec;
-    private Date joining;
 
+    //-- functions for Name ----------------------------------------------------
+    /**
+     * Gibt den Namen des Player's als String zurück
+     * @return
+     */
     public String getName() {
         return name;
     }
-
+    
+    /**
+     * Ändert den Namen des Player's zu dem übergebenen String
+     * @param name the new Name for the Player
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    //-- functions for Role ----------------------------------------------------
+    /**
+     * Gibt die Rolle des Player's als Enum Role zurück.
+     * <p> Enum Role: CLERIC,MAGE,ROUGE,WARRIOR
+     * @return Enum Role des Player's
+     */
     public Role getRole() {
         return role;
     }
+    
+    /**
+     * Gibt die Rolle des Player's als String zurück.
+     * <p> Werte: Kleriker, Magier, Schurke, Krieger, no Specific
+     * @return Rolle als String des Player's
+     */
     public String getStringRole() {
         switch(role){
             case CLERIC : return "Kleriker";
@@ -59,45 +76,23 @@ public class Player {
             default: return "no Specific";
         }
     }
-
-    public Spec getMainSpec() {
-        return mainSpec;
-    }
     
-    public Spec getSecondSpec() {
-        return secSpec;
-    }
-    public String getStringMainSpec() {
-        switch(mainSpec){
-            case DD : return "Schaden";
-            case TANK   : return "Tank";
-            case HEAL  : return "Heiler";
-            case SUPPORT: return "Support";
-            default: return "no Specific";
-        }
-    }
-    public String getStringSecondSpec() {
-        switch(secSpec){
-            case DD : return "Schaden";
-            case TANK   : return "Tank";
-            case HEAL  : return "Heiler";
-            case SUPPORT: return "Support";
-            default: return " ";
-        }
-    }
-
-    public Date getJoining() {
-        return joining;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setClass(Role role) {
+    /**
+     * Ändert die Rolle zur übergebenen Enum Role
+     * @param role neue Rolle des Player's als Enum Role
+     */
+    public void setRole(Role role) {
         this.role = role;
     }
-    public void setClass(String role) {
+    
+    /**
+     * Ändert die Rolle zur übergebenen Rolle
+     * Wobei Groß-/Kleinschreibung ignorriert wird.
+     * <p> Werte: magier, schurke, krieger,kleriker
+     * <p> Oder: mage, rouge, warrior, cleric
+     * @param role neue Rolle des Player's als String
+     */
+    public void setRole(String role) {
         role = role.toLowerCase();
         switch (role) {
             case "magier":
@@ -118,62 +113,10 @@ public class Player {
                 break;
         }
     }
-    
-    public void setMainSpec(Spec mainSpec) {
-        this.mainSpec = mainSpec;
-    }
-    
-    public void setSecondSpec(Spec secSpec) {
-        this.secSpec = secSpec;
-    }
-    public void setMainSpec(String mainSpec) {
-        mainSpec = mainSpec.toLowerCase();
-        switch(mainSpec){
-            case "tank":
-                this.mainSpec = Spec.TANK;
-                break;
-            case "heal":
-                this.mainSpec = Spec.HEAL;
-                break;
-            case "support":
-                this.mainSpec = Spec.SUPPORT;
-                break;
-            default:
-                this.mainSpec = Spec.DD;
-                break;
-        
-        }
-    }    
-    
-    public void setSecondSpec(String secSpec) {
-        secSpec = secSpec.toLowerCase();
-        switch(secSpec){
-            case "dd":
-                this.secSpec = Spec.DD;
-                break;
-            case "tank":
-                this.secSpec = Spec.TANK;
-                break;
-            case "heal":
-                this.secSpec = Spec.HEAL;
-                break;
-            case "sup":
-                this.secSpec = Spec.SUPPORT;
-                break;
-            default:
-                this.secSpec = Spec.NONE;
-                break;
-        
-        }
-    }
-    
-    @Override
-    public String toString(){
-        String out = "Player( ";
-        out+=name+" )[ ";
-        out+=role+" | ";
-        out+=getStringMainSpec()+" ; ";
-        out+=getStringSecondSpec()+" )";
-        return out;
-    }
+    //-- functions for Specs --------------------------------------------------- 
+
+    /**
+     * Gibt das Beitrittsdatum des Player's zum Raidkader als Date zurück.
+     * @return Datum des Raidbeitritt's des Player's
+     */
 }

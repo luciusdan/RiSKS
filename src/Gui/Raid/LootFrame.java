@@ -12,8 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -36,14 +34,15 @@ public class LootFrame extends javax.swing.JFrame {
     }
 
     public void open(Raid raid, Date timestamp){
+        //commentArea.setFocusable(rootPaneCheckingEnabled);
         this.raid= raid;
         this.loot = raid.getLoot(timestamp);
-        LinkedList<Member> members = raid. getfiltertMembersNames();
+        LinkedList<Member> members = raid.getFiltertMembersNames();
         memberCB.removeAllItems();
         for (int i=0;i<members.size();i++){
-            String name = members.get(i).getPlayer().getName();
+            String name = members.get(i).getName();
             memberCB.addItem(name);
-            if(loot.getMember().getPlayer().getName().equals(name)){
+            if(loot.getMember().getName().equals(name)){
                 memberCB.setSelectedIndex(i);
             }
         }
@@ -64,11 +63,11 @@ public class LootFrame extends javax.swing.JFrame {
 
         jSpinField1 = new com.toedter.components.JSpinField();
         close = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        commentArea = new javax.swing.JTextArea();
-        memberCB = new javax.swing.JComboBox();
         checkButton = new javax.swing.JButton();
         dateField = new javax.swing.JTextField();
+        memberCB = new javax.swing.JComboBox();
+        commentAreaScrollPane = new javax.swing.JScrollPane();
+        commentArea = new javax.swing.JTextArea();
 
         setResizable(false);
         addWindowStateListener(new java.awt.event.WindowStateListener() {
@@ -84,10 +83,6 @@ public class LootFrame extends javax.swing.JFrame {
             }
         });
 
-        commentArea.setColumns(20);
-        commentArea.setRows(5);
-        jScrollPane1.setViewportView(commentArea);
-
         checkButton.setText("O.K.");
         checkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,6 +96,10 @@ public class LootFrame extends javax.swing.JFrame {
             }
         });
 
+        commentArea.setColumns(20);
+        commentArea.setRows(5);
+        commentAreaScrollPane.setViewportView(commentArea);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,7 +108,7 @@ public class LootFrame extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(memberCB, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(commentAreaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -126,13 +125,14 @@ public class LootFrame extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addComponent(memberCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(commentAreaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkButton)
-                    .addComponent(close)))
+                    .addComponent(close))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -171,7 +171,7 @@ public class LootFrame extends javax.swing.JFrame {
                     String name = commentArea.getText();
                     Member member = raid.getMemberByName((String)memberCB.getSelectedItem());
                     
-                    raid.removeLoot(timestamp);
+                    raid.removeLoot(loot.getTimestamp());
                     loot.setMember(member);
                     loot.setName(name);
                     loot.setTimestamp(timestamp);
@@ -208,8 +208,8 @@ public class LootFrame extends javax.swing.JFrame {
     private javax.swing.JButton checkButton;
     private javax.swing.JButton close;
     private javax.swing.JTextArea commentArea;
+    private javax.swing.JScrollPane commentAreaScrollPane;
     private javax.swing.JTextField dateField;
-    private javax.swing.JScrollPane jScrollPane1;
     private com.toedter.components.JSpinField jSpinField1;
     private javax.swing.JComboBox memberCB;
     // End of variables declaration//GEN-END:variables
