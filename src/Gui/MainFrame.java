@@ -1,34 +1,67 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * RiftSKS ist ein Programm zum führen eines Raidkaders mit der Absicht
+ * das SKS-Verfahren bei der Lootverteilung anzuwenden.
+ * Copyright (C) 2013  Dirk Evers
+ * 
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License,
+ * or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, see <http://www.gnu.org/licenses/>.package Main;
  */
-package Gui;
+package GUI;
 
-import Gui.Raid.RaidPanel;
-import Gui.Cader.CaderPanel;
-import Data.Cader;
+import GUI.Items.ItemOverviewPanel;
+import GUI.Overview.PlayerOverviewPanel;
+import GUI.Raid.RaidPanel;
+import java.awt.Image;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
+import java.util.LinkedList;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Zentrales Frame für das Programm.
+ * Von hier aus sind die 3MetaPanel PlayerOverviewPanel, RaidPanel und
+ * ItemOverviewPanel zu erreichen.
+ * Zusetzlich ist eine Menubar implementiert.
  * @author Dirk
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    LinkedList<JPanel> panels;
+    InfoFrame infoFrame;
+    
     /**
-     * Creates new form MainFrame
+     * Konstrukter des MainFrame
      */
     public MainFrame() {
-        Cader cader = new Cader();
         initComponents();
+        this.setLocationRelativeTo(null);
+        panels = new LinkedList<>();
+        JPanel panel = new PlayerOverviewPanel();
+        panels.add(panel);
+        tabbedPane.add(panel, "Spieler");
+        panel = new RaidPanel();
+        panels.add(panel);
+        tabbedPane.add(panel, "Raid's");
+        panel = new ItemOverviewPanel();
+        panels.add(panel);
+        tabbedPane.add(panel, "Gegenstände");
+        tabbedPane.setSelectedIndex(1);
         
-        RaidPanel rP = new RaidPanel(cader);
-        rP.setName("Raids");
-        mainTabPanel.add(rP);
-        
-        CaderPanel cP = new CaderPanel(cader);
-        cP.setName("Kader");
-        mainTabPanel.add(cP);
-        
+        infoFrame = new InfoFrame();
+        Image image = new javax.swing.ImageIcon(getClass().getResource("/Resource/Images/Logo/icon.png")).getImage();
+        infoFrame.setIconImage(image);
+        this.setIconImage(image);
     }
 
     /**
@@ -40,29 +73,246 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainTabPanel = new javax.swing.JTabbedPane();
+        jFileChooser = new javax.swing.JFileChooser();
+        tabbedPane = new javax.swing.JTabbedPane();
+        menuBar = new javax.swing.JMenuBar();
+        dataMenu = new javax.swing.JMenu();
+        saveMenuItem = new javax.swing.JMenuItem();
+        dataMenuSeparator1 = new javax.swing.JPopupMenu.Separator();
+        resetRaid = new javax.swing.JMenuItem();
+        dataMenuSeperator2 = new javax.swing.JPopupMenu.Separator();
+        importButton = new javax.swing.JMenuItem();
+        exportButton = new javax.swing.JMenuItem();
+        dataMenuSeperator3 = new javax.swing.JPopupMenu.Separator();
+        closeMenuButton = new javax.swing.JMenuItem();
+        raidMenu = new javax.swing.JMenu();
+        addRaidMenuItem = new javax.swing.JMenuItem();
+        removeRaidMenuItem = new javax.swing.JMenuItem();
+        playerMenu = new javax.swing.JMenu();
+        createPlayerButton = new javax.swing.JMenuItem();
+        playerMenuSeparator = new javax.swing.JPopupMenu.Separator();
+        guildMenuItem = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
+        errorFrameButton = new javax.swing.JMenuItem();
+        infoButon = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("RISKS - Rift SKS Planer Alpha-2");
+        jFileChooser.setAcceptAllFileFilterUsed(false);
+        jFileChooser.setCurrentDirectory(null);
+        jFileChooser.setDialogTitle("");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("RiSKS Beta V0.6.6");
         setResizable(false);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
+        dataMenu.setText("Datei");
+
+        saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenuItem.setText("Speichern");
+        dataMenu.add(saveMenuItem);
+        dataMenu.add(dataMenuSeparator1);
+
+        resetRaid.setText("Neue SKS-Liste");
+        dataMenu.add(resetRaid);
+        dataMenu.add(dataMenuSeperator2);
+
+        importButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        importButton.setText("Importieren");
+        dataMenu.add(importButton);
+
+        exportButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        exportButton.setText("Exportieren");
+        dataMenu.add(exportButton);
+        dataMenu.add(dataMenuSeperator3);
+
+        closeMenuButton.setText("Beenden");
+        closeMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeMenuButtonActionPerformed(evt);
+            }
+        });
+        dataMenu.add(closeMenuButton);
+
+        menuBar.add(dataMenu);
+
+        raidMenu.setText("Raid");
+
+        addRaidMenuItem.setText("Neuen Raid hinzufügen");
+        raidMenu.add(addRaidMenuItem);
+
+        removeRaidMenuItem.setText("Letzten Raid entfernen");
+        raidMenu.add(removeRaidMenuItem);
+
+        menuBar.add(raidMenu);
+
+        playerMenu.setText("Spieler");
+
+        createPlayerButton.setText("Spieler hinzufügen");
+        playerMenu.add(createPlayerButton);
+        playerMenu.add(playerMenuSeparator);
+
+        guildMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        guildMenuItem.setText("Gilden bearbeiten");
+        playerMenu.add(guildMenuItem);
+
+        menuBar.add(playerMenu);
+
+        helpMenu.setText("Hilfe");
+
+        errorFrameButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
+        errorFrameButton.setText("Konsole anzeigen");
+        helpMenu.add(errorFrameButton);
+
+        infoButon.setText("Info");
+        infoButon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                infoButonActionPerformed(evt);
+            }
+        });
+        helpMenu.add(infoButon);
+
+        menuBar.add(helpMenu);
+
+        setJMenuBar(menuBar);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(mainTabPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1156, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(mainTabPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 543, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void closeMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeMenuButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_closeMenuButtonActionPerformed
+
+    private void infoButonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoButonActionPerformed
+        infoFrame.setVisible(true);
+        infoFrame.setLocationRelativeTo(null);
+    }//GEN-LAST:event_infoButonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane mainTabPanel;
+    private javax.swing.JMenuItem addRaidMenuItem;
+    private javax.swing.JMenuItem closeMenuButton;
+    private javax.swing.JMenuItem createPlayerButton;
+    private javax.swing.JMenu dataMenu;
+    private javax.swing.JPopupMenu.Separator dataMenuSeparator1;
+    private javax.swing.JPopupMenu.Separator dataMenuSeperator2;
+    private javax.swing.JPopupMenu.Separator dataMenuSeperator3;
+    private javax.swing.JMenuItem errorFrameButton;
+    private javax.swing.JMenuItem exportButton;
+    private javax.swing.JMenuItem guildMenuItem;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem importButton;
+    private javax.swing.JMenuItem infoButon;
+    private javax.swing.JFileChooser jFileChooser;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu playerMenu;
+    private javax.swing.JPopupMenu.Separator playerMenuSeparator;
+    private javax.swing.JMenu raidMenu;
+    private javax.swing.JMenuItem removeRaidMenuItem;
+    private javax.swing.JMenuItem resetRaid;
+    private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
+
+    
+    public void addCreateRaidListener(ActionListener l){
+        addRaidMenuItem.addActionListener(l);
+    }
+    
+    public void addSKSResetListener(ActionListener l){
+        resetRaid.addActionListener(l);
+    }
+    
+    public void addErrorFrameButtonListener(ActionListener l) {
+        this.errorFrameButton.addActionListener(l);
+    }
+    
+    public void addExportListener(ActionListener l) {
+        exportButton.addActionListener(l);
+    }
+    
+    public void addFormListener(WindowListener l){
+        this.addWindowListener(l);
+    }
+    
+    public void addGuildListener(ActionListener l) {
+        guildMenuItem.addActionListener(l);
+    }
+    
+    public void addImExportAcceptListener(ActionListener l) {
+        jFileChooser.addActionListener(l);
+    }
+    
+    public void addImportListener(ActionListener l) {
+        importButton.addActionListener(l);
+    }
+    
+    public void addMemberAddListener(ActionListener l) {
+        createPlayerButton.addActionListener(l);
+    }
+    
+    public void addRemoveRaidListener(ActionListener l){
+        removeRaidMenuItem.addActionListener(l);
+    }
+    
+    public void addSaveAllListener(ActionListener l){
+        saveMenuItem.addActionListener(l);
+    }
+     
+    public void addTabListener(ChangeListener l){
+        tabbedPane.addChangeListener(l);
+    }
+    
+    /**
+     * Gibt den FileChooser für import/export zurück.
+     * @return
+     */
+    public JFileChooser getFileChooser(){
+        return this.jFileChooser;
+    }
+    
+    /**
+     * Gibt das MetaPanel ItemOverviewPanel zurück
+     * @return MetaPanel ItemOverviewPanel
+     */
+    public ItemOverviewPanel getItemPanel(){
+        ItemOverviewPanel p = (ItemOverviewPanel) panels.get(2);
+        return (ItemOverviewPanel)panels.get(2);
+    }
+    
+    /**
+     * Gibt das MetaPanel RaidPanel zurück
+     * @return MetaPanel RaidPanel
+     */
+    public RaidPanel getRaidPanel(){
+        return (RaidPanel)panels.get(1);
+    }
+    
+    /**
+     * Gibt das MetaPanel PlayerOverviewPanel zurück
+     * @return MetaPanel PlayerOverviewPanel
+     */
+    public PlayerOverviewPanel getRaiderPanel(){
+        return (PlayerOverviewPanel)panels.get(0);
+    }
+    
+    /**
+     * Gibt den Index des ausgewählten MetaPanels zurück.
+     * 0: PlayerOverviewPanel
+     * 1: RaidPanel
+     * 2: ItemOverviewPanel
+     * @return Index des ausgewählten MetaPanels
+     */
+    public int getTabbedPanel() {
+        return tabbedPane.getSelectedIndex();
+    }
+
 }
