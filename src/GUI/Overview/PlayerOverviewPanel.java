@@ -21,13 +21,16 @@ package GUI.Overview;
 import Controller.DateFormater;
 import Data.Player;
 import Data.Player.RaidState;
-import Data.Player.RaidState.*;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
+import java.awt.image.BufferedImage;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -40,18 +43,15 @@ import javax.swing.table.TableColumnModel;
  * @author Dirk
  */
 public class PlayerOverviewPanel extends javax.swing.JPanel {
-
-    Date wallDate;
+    HashMap<RaidState,Color> stateColor;
     /**
      * Creates new form OverviewPanel
      */
     public PlayerOverviewPanel() {
-        try {
-            wallDate = DateFormater.raidDateFormat.parse("31.12.2013");
-        } catch (ParseException ex) {
-            wallDate = null;
-        }
         initComponents();
+        stateColor = new HashMap<>();
+        addStandardColors();
+        setPopupColors();
         TableColumn col =playerTable.getColumnModel().getColumn(0);
         int size = 70;
         col.setPreferredWidth(size);
@@ -87,17 +87,13 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
         separator3 = new javax.swing.JPopupMenu.Separator();
         hideButton = new javax.swing.JCheckBoxMenuItem();
         percentButton = new javax.swing.JCheckBoxMenuItem();
-        infoPanel = new javax.swing.JPanel();
-        cl1 = new javax.swing.JLabel();
-        cp1 = new javax.swing.JPanel();
-        cl2 = new javax.swing.JLabel();
-        cp2 = new javax.swing.JPanel();
-        cl3 = new javax.swing.JLabel();
-        cp3 = new javax.swing.JPanel();
-        cl4 = new javax.swing.JLabel();
-        cp4 = new javax.swing.JPanel();
-        cl5 = new javax.swing.JLabel();
-        cp5 = new javax.swing.JPanel();
+        ColorPopupMenu = new javax.swing.JPopupMenu();
+        thereColorMenuButton = new javax.swing.JMenuItem();
+        standbyColorMenuButton = new javax.swing.JMenuItem();
+        awayColorMenuButton = new javax.swing.JMenuItem();
+        offColorMenuButton = new javax.swing.JMenuItem();
+        deadColorMenuButton = new javax.swing.JMenuItem();
+        jColorChooser1 = new javax.swing.JColorChooser();
         jSplitPane1 = new javax.swing.JSplitPane();
         playerDataScrollPane = new javax.swing.JScrollPane();
         playerDataTable = new javax.swing.JTable();
@@ -125,129 +121,28 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
         percentButton.setText("in Prozent");
         popupMenu.add(percentButton);
 
+        thereColorMenuButton.setText("Anwesend");
+        thereColorMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                thereColorMenuButtonActionPerformed(evt);
+            }
+        });
+        ColorPopupMenu.add(thereColorMenuButton);
+
+        standbyColorMenuButton.setText("Ersatz");
+        ColorPopupMenu.add(standbyColorMenuButton);
+
+        awayColorMenuButton.setText("Abwesend");
+        ColorPopupMenu.add(awayColorMenuButton);
+
+        offColorMenuButton.setText("Abgemeldet");
+        ColorPopupMenu.add(offColorMenuButton);
+
+        deadColorMenuButton.setText("nicht Vorhanden");
+        ColorPopupMenu.add(deadColorMenuButton);
+
+        setNextFocusableComponent(this);
         setPreferredSize(new java.awt.Dimension(1151, 546));
-
-        infoPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        cl1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        cl1.setText("Anwesend");
-
-        cp1.setBackground(new java.awt.Color(255, 51, 0));
-
-        javax.swing.GroupLayout cp1Layout = new javax.swing.GroupLayout(cp1);
-        cp1.setLayout(cp1Layout);
-        cp1Layout.setHorizontalGroup(
-            cp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
-        );
-        cp1Layout.setVerticalGroup(
-            cp1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        cl2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        cl2.setText("Ersatz");
-
-        cp2.setBackground(new java.awt.Color(255, 51, 0));
-
-        javax.swing.GroupLayout cp2Layout = new javax.swing.GroupLayout(cp2);
-        cp2.setLayout(cp2Layout);
-        cp2Layout.setHorizontalGroup(
-            cp2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
-        );
-        cp2Layout.setVerticalGroup(
-            cp2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        cl3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        cl3.setText("Abgemeldet");
-
-        cp3.setBackground(new java.awt.Color(255, 51, 0));
-
-        javax.swing.GroupLayout cp3Layout = new javax.swing.GroupLayout(cp3);
-        cp3.setLayout(cp3Layout);
-        cp3Layout.setHorizontalGroup(
-            cp3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
-        );
-        cp3Layout.setVerticalGroup(
-            cp3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        cl4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        cl4.setText("Abwesend");
-
-        cp4.setBackground(new java.awt.Color(255, 51, 0));
-
-        javax.swing.GroupLayout cp4Layout = new javax.swing.GroupLayout(cp4);
-        cp4.setLayout(cp4Layout);
-        cp4Layout.setHorizontalGroup(
-            cp4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
-        );
-        cp4Layout.setVerticalGroup(
-            cp4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        cl5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        cl5.setText("nicht im SKS");
-
-        cp5.setBackground(new java.awt.Color(255, 51, 0));
-
-        javax.swing.GroupLayout cp5Layout = new javax.swing.GroupLayout(cp5);
-        cp5.setLayout(cp5Layout);
-        cp5Layout.setHorizontalGroup(
-            cp5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
-        );
-        cp5Layout.setVerticalGroup(
-            cp5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
-        infoPanel.setLayout(infoPanelLayout);
-        infoPanelLayout.setHorizontalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(infoPanelLayout.createSequentialGroup()
-                .addComponent(cl1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cp1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cl2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cp2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cl3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cp3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cl4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cp4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cl5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cp5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(791, Short.MAX_VALUE))
-        );
-        infoPanelLayout.setVerticalGroup(
-            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cl5, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
-            .addComponent(cl4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cl3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cl2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cl1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cp1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cp2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cp3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cp4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cp5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
 
         jSplitPane1.setDividerLocation(300);
 
@@ -263,7 +158,7 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
         ));
         playerDataTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         playerDataTable.setCellSelectionEnabled(true);
-        playerDataTable.setComponentPopupMenu(popupMenu);
+        playerDataTable.setComponentPopupMenu(ColorPopupMenu);
         playerDataTable.setEnabled(false);
         playerDataTable.setSelectionBackground(new java.awt.Color(50, 153, 255));
         playerDataTable.getTableHeader().setReorderingAllowed(false);
@@ -304,6 +199,7 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
         });
         playerTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
         playerTable.setComponentPopupMenu(popupMenu);
+        playerTable.setNextFocusableComponent(playerTable);
         playerTable.getTableHeader().setReorderingAllowed(false);
         playerScrollPane.setViewportView(playerTable);
 
@@ -314,19 +210,14 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jSplitPane1))
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1141, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -334,22 +225,20 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_playerScrollPanePropertyChange
 
+    private void thereColorMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_thereColorMenuButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_thereColorMenuButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu ColorPopupMenu;
+    private javax.swing.JMenuItem awayColorMenuButton;
     private javax.swing.JMenuItem changePlayerButton;
-    private javax.swing.JLabel cl1;
-    private javax.swing.JLabel cl2;
-    private javax.swing.JLabel cl3;
-    private javax.swing.JLabel cl4;
-    private javax.swing.JLabel cl5;
-    private javax.swing.JPanel cp1;
-    private javax.swing.JPanel cp2;
-    private javax.swing.JPanel cp3;
-    private javax.swing.JPanel cp4;
-    private javax.swing.JPanel cp5;
     private javax.swing.JMenuItem createPlayerButton;
+    private javax.swing.JMenuItem deadColorMenuButton;
     private javax.swing.JCheckBoxMenuItem hideButton;
-    private javax.swing.JPanel infoPanel;
+    private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JMenuItem offColorMenuButton;
     private javax.swing.JCheckBoxMenuItem percentButton;
     private javax.swing.JScrollPane playerDataScrollPane;
     private javax.swing.JTable playerDataTable;
@@ -360,6 +249,8 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
     private javax.swing.JPopupMenu.Separator separator1;
     private javax.swing.JPopupMenu.Separator separator2;
     private javax.swing.JPopupMenu.Separator separator3;
+    private javax.swing.JMenuItem standbyColorMenuButton;
+    private javax.swing.JMenuItem thereColorMenuButton;
     // End of variables declaration//GEN-END:variables
     
     public void addPercentListener(ActionListener l){
@@ -416,13 +307,9 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
 
         String[] col = new String[dates.size()];
         Color[][] data = new Color[content.length][col.length];
-        int dateWall = col.length;
         for(int i=0;i<col.length;i++){
             Date date = dates.get(col.length-i-1);
             col[i] = DateFormater.simpleRaidDateFormat.format(date);
-            if(wallDate!=null&&wallDate.before(date)){
-                dateWall= i;
-            }
         }
          for(int i=0;i<content.length;i++){
              Object[] iC = (Object[]) content[i];
@@ -451,57 +338,14 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
              
              
              ptm.addRow(infoRow);
-             cp1.setBackground(Color.GREEN);
-             cp2.setBackground(Color.YELLOW);
-             cp3.setBackground(Color.WHITE);
-             cp4.setBackground(new Color(255,76,76));
-             cp5.setBackground(Color.LIGHT_GRAY);
              
              for(int j=0;j<col.length;j++){
              //for(int j=col.length-1;j>=0;j--){
                  RaidState state = states[col.length-j-1];
-                 if(j<=dateWall){
                  if(state!=null){
-                     switch(states[col.length-j-1]){
-                        case TEILG:
-                            data[i][j]= Color.GREEN;
-                            break;
-                        case ERSATZ:
-                            data[i][j]= Color.YELLOW;
-                            break;
-                        case ABGEMELDET:
-                            data[i][j]= Color.WHITE;
-                            break;
-                        case ABWESEND:
-                            data[i][j]= new Color(255,76,76);
-                            break;
-                        default:
-                            data[i][j]= Color.LIGHT_GRAY;
-                    }
+                     data[i][j] = stateColor.get(state);
                  }else{
-                            data[i][j]= Color.LIGHT_GRAY;
-                 }
-                 }else{
-                     if(state!=null){
-                     switch(states[col.length-j-1]){
-                        case TEILG:
-                            data[i][j]= Color.GREEN;
-                            break;
-                        case ERSATZ:
-                            data[i][j]= Color.YELLOW;
-                            break;
-                        case ABGEMELDET:
-                            data[i][j]= Color.WHITE;
-                            break;
-                        case ABWESEND:
-                            data[i][j]= Color.WHITE;
-                            break;
-                        default:
-                            data[i][j]= Color.LIGHT_GRAY;
-                    }
-                 }else{
-                            data[i][j]= Color.LIGHT_GRAY;
-                 }
+                            data[i][j]= stateColor.get(RaidState.GELOESCHT);
                  }
              }
              
@@ -543,6 +387,63 @@ public class PlayerOverviewPanel extends javax.swing.JPanel {
                 setBackground(Color.WHITE);
                 super.setValue( value );
             }
+        }
+    }
+    
+    public void setColors(HashMap <RaidState,Color> map){
+        stateColor = map;
+        addStandardColors();
+        setPopupColors();
+    }
+    
+    private void addStandardColors(){
+        stateColor = new HashMap<>();
+        if((stateColor.get(RaidState.TEILG))==null){
+            stateColor.put(RaidState.TEILG, Color.GREEN);
+        }
+        if((stateColor.get(RaidState.ERSATZ))==null){
+            stateColor.put(RaidState.ERSATZ, Color.YELLOW);
+        }
+        if((stateColor.get(RaidState.ABGEMELDET))==null){
+            stateColor.put(RaidState.ABGEMELDET, Color.WHITE);
+        }
+        if((stateColor.get(RaidState.ABWESEND))==null){
+            stateColor.put(RaidState.ABWESEND, new Color(255,76,76));
+        }
+        if((stateColor.get(RaidState.GELOESCHT))==null){
+            stateColor.put(RaidState.GELOESCHT, Color.LIGHT_GRAY);
+        }
+    }
+    
+    private void setPopupColors(){
+        int size = 20;
+        
+        for(RaidState state :stateColor.keySet()){
+            JMenuItem item = getColorMenuItem(state);
+            if(item!=null){
+                BufferedImage image = new BufferedImage(size, size,BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = image.createGraphics();
+                g.setColor(stateColor.get(state));
+                g.fillRect(0, 0, size, size);
+                item.setIcon(new ImageIcon(image));
+            }
+        }
+    }
+    
+    private JMenuItem getColorMenuItem(RaidState raidState){
+        switch(raidState){
+            case TEILG:
+                return thereColorMenuButton;
+            case ERSATZ:
+                return standbyColorMenuButton;
+            case ABGEMELDET:
+                return offColorMenuButton;
+            case ABWESEND:
+                return awayColorMenuButton;
+            case GELOESCHT:
+                return deadColorMenuButton;
+            default:
+                return null;
         }
     }
 }

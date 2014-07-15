@@ -1,0 +1,7 @@
+17:05:38:120 INFO (File.XLS.XLSBookForge): 
+Data List:  ----------------------
+	data_2014_186_15_50_39.xls
+
+17:05:38:178 INFO (File.XLS.XLSBookForge): Teste Datei:data_2014_186_15_50_39.xls
+17:05:38:218 INFO (File.XLS.XLSBookForge): Lese Book aus "data_2014_186_15_50_39.xls" .
+17:05:39:134 INFO (File.XLS.XLSBookForge): Buch gelesen.

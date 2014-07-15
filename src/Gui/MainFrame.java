@@ -104,6 +104,8 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("RiSKS Beta V0.6.6");
         setResizable(false);
 
+        menuBar.setNextFocusableComponent(tabbedPane);
+
         dataMenu.setText("Datei");
 
         saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
